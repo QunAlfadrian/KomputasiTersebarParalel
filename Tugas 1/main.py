@@ -3,7 +3,7 @@ import numpy as np
 import multiprocessing as mp
 import time
 
-img = cv.imread("larger_fixed.png")
+img = cv.imread("larger.png")
 
 def SerialGrayScale(img):
     row, col = img.shape[0:2]
@@ -30,13 +30,13 @@ if __name__ == "__main__":
     start = time.time()
     serialGray = SerialGrayScale(img.copy())
     end = time.time()
-    print(f"Serial Time elapsed: {end-start}s")
+    print(f"Serial Time elapsed: {end-start} seconds")
 
     # Start parallel process
     start = time.time()
     parallelGray = ParallelGrayScale(img.copy(), 6)
     end = time.time()
-    print(f"Parallel Time elapsed: {end-start}")
+    print(f"Parallel Time elapsed: {end-start} seconds")
 
     # resize all image and show in one window
     imgResized = cv.resize(img, (500, 500))
