@@ -13,25 +13,32 @@ def SerialGrayScale(img):
     return img
 
 def ParallelGrayScale(img, n):
+    # split image to n parts
     splitImg = np.array_split(img, n, axis=0)
 
+    # assign each parts calculation to different cores
     with mp.Pool(processes=n) as pool:
         processedImg = pool.map(SerialGrayScale, splitImg)
     
+    # recombine the processed image
     combined = np.vstack(processedImg)
+
     return combined
 
 if __name__ == "__main__":
+    # Start serial process
     start = time.time()
     serialGray = SerialGrayScale(img.copy())
     end = time.time()
     print(f"Serial Time elapsed: {end-start}s")
 
+    # Start parallel process
     start = time.time()
     parallelGray = ParallelGrayScale(img.copy(), 6)
     end = time.time()
     print(f"Parallel Time elapsed: {end-start}")
 
+    # resize all image and show in one window
     imgResized = cv.resize(img, (500, 500))
     serialGrayResized = cv.resize(serialGray, (500, 500))
     parallelGrayResized = cv.resize(parallelGray, (500, 500))
